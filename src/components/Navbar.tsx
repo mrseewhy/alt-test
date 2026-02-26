@@ -1,5 +1,8 @@
 import { NavLink } from "react-router-dom"
+import { useAuth } from '../context/AuthContext'
+
 const Navbar = () => {
+    const { currentUser, logout } = useAuth()
     return (
         <div >
             <header className="py-4 md:py-6">
@@ -29,14 +32,27 @@ const Navbar = () => {
 
                             <NavLink to="/contact" title="" className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Contact </NavLink>
                         </div>
+                        {currentUser ?
+                            (<div className="hidden lg:ml-auto lg:flex lg:items-center lg:space-x-8 xl:space-x-10">
+                                <NavLink to="dashboard" title="" className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Dashboard </NavLink>
 
-                        <div className="hidden lg:ml-auto lg:flex lg:items-center lg:space-x-8 xl:space-x-10">
-                            <NavLink to="sign-in" title="" className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Sign in </NavLink>
+                                <NavLink to="#"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        logout()
+                                    }}
+                                    title="" className="px-5 py-2 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900" role="button">
+                                    Logout
+                                </NavLink>
+                            </div>)
+                            :
+                            (<div className="hidden lg:ml-auto lg:flex lg:items-center lg:space-x-8 xl:space-x-10">
+                                <NavLink to="sign-in" title="" className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Sign in </NavLink>
 
-                            <NavLink to="create-an-account" title="" className="px-5 py-2 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900" role="button">
-                                Create free account
-                            </NavLink>
-                        </div>
+                                <NavLink to="create-an-account" title="" className="px-5 py-2 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900" role="button">
+                                    Create free account
+                                </NavLink>
+                            </div>)}
                     </div>
                 </div>
             </header>

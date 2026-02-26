@@ -1,4 +1,9 @@
 import { useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '../../lib/firebase'
+import { updateProfile } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 
 interface Value {
     fullNames: string,
@@ -7,27 +12,41 @@ interface Value {
     terms: boolean
 }
 
-
-const CreateAccount = () => {
+const CreateAccount: React.FC = () => {
     const initialValues: Value = {
         fullNames: "",
         email: "",
         password: "",
         terms: false
     }
-    const [formData, setFormData] = useState(initialValues)
+    const [formData, setFormData] = useState<Value>(initialValues)
+    const { signup } = useAuth()
+    const navigate = useNavigate()
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, type, value, checked } = e.target
-
         setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData)
+        const userCredential = await signup(formData.email, formData.password)
+        await updateProfile(userCredential.user, {
+            displayName: formData.fullNames
+        })
+
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+            fullNames: formData.fullNames,
+            email: formData.email,
+            role: 'user',
+            createdAt: serverTimestamp(),
+            terms: formData.terms,
+        })
+
         setFormData(initialValues)
+        navigate('/dashboard')
     }
+
 
     return (
         <div className="bg-white md:h-screen">
