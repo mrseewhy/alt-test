@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
                                     if (!post) throw new Error("Not Found", { status: 404 })
                                     return post
                                 },
-                                handle: { header: data => data.title }
+                                handle: { header: (data) => data.title }
                             }
                         ]
                     },
