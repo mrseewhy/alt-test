@@ -1,6 +1,6 @@
 
 
-const BlogPageContext = ({ img, title, body }) => {
+const BlogPageContext = ({ img, title, body }: { img: string, title: string, body: string }) => {
     return (
         <div className="my-8 w-3/4 mx-auto">
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const BlogCard = ({ img, title, body, link }) => {
+const BlogCard = ({ img, title, body, link }: { img: string, title: string, body: string, link: string }) => {
     return (
         <div className='flex flex-col w-9/12 mx-auto mt-12 mb-12 rounded-xl bg-gray-50 shadow-2xl'>
             <img
